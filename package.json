@@ -1,0 +1,26 @@
+{
+  "name": "npm-nrf5-installer",
+  "version": "0.0.1",
+  "description": "An awesome nRF5 stack installer using npm",
+  "bin": {
+    "nrf5-install": "bin/index.js"
+  },
+  "scripts": {
+    "nrf5-install": "node bin/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b3nNn/vsp-npm-nRF5-stack-installer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/b3nNn/vsp-npm-nRF5-stack-installer/issues"
+  },
+  "homepage": "https://github.com/b3nNn/vsp-npm-nRF5-stack-installer#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "shelljs": "^0.8.4"
+  }
+}
