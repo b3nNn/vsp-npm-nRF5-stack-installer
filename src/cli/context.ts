@@ -1,26 +1,23 @@
-import { LoggingContext } from './loggingContext';
-import { LoggingContextInterface } from './loggingContext.interface';
+import { LoggingContextInterface } from '../domain/logging/loggingContext.interface';
 
 export class Context implements LoggingContextInterface {
-    private logging: LoggingContext;
+    private console: any;
+    private chalk: any;
 
-    public constructor(logging: LoggingContext) {
-        this.logging = logging;
-    }
-
-    public getLogging(): LoggingContext {
-        return this.logging;
+    public constructor(console: any, chalk: any) {
+        this.console = console;
+        this.chalk = chalk;
     }
 
     public getConsole(): any {
-        return this.logging.getConsole();
+        return this.console;
     }
 
     public getChalk(): any {
-        return this.logging.getChalk();
+        return this.chalk;
     }
 }
 
-export function createContext(logging: LoggingContext): Context {
-    return new Context(logging);
+export function createContext(console: any, chalk: any): Context {
+    return new Context(console, chalk);
 }

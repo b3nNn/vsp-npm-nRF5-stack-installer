@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli = require("./cli");
+const domain = require("./domain");
 const chalk = require("chalk");
 const config = cli.createAppConfiguration(process.argv);
-const logginCtx = cli.createLoggingContext(console, chalk);
-const ctx = cli.createContext(logginCtx);
-const app = cli.createCliApplication(config, ctx);
+const ctx = cli.createContext(console, chalk);
+const installService = domain.services.createInstallationService(ctx);
+const app = cli.createCliApplication(config, installService);
 app.execute();
 //# sourceMappingURL=index.js.map
