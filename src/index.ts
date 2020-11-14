@@ -1,5 +1,5 @@
 
-import * as cli from '../src/cli';
+import * as cli from './cli';
 import * as chalk from 'chalk';
 
 const config: cli.AppConfiguration = cli.createAppConfiguration(process.argv);
