@@ -1,6 +1,6 @@
 import { InstallationServiceInterface } from '.';
 import { InstallationAdapterInterface, OptionAdapterInterface } from '../adapters';
-import { Registry } from '../registries/registry';
+import { Registry } from '../registries';
 import { LoggingContextInterface } from '../logging';
 
 export class InstallationService implements InstallationServiceInterface {
@@ -12,9 +12,14 @@ export class InstallationService implements InstallationServiceInterface {
         this.cfx = logging.getChalk();
     }
 
-    public install(requirements: string[], installations: Registry<InstallationAdapterInterface>, options: Registry<OptionAdapterInterface>) {
+    public install(requirements: string[], installations: Registry<InstallationAdapterInterface>, options: Registry<OptionAdapterInterface>): number {
         const installs: InstallationAdapterInterface[] = [];
         const opts: OptionAdapterInterface[] = [];
+
+        if (requirements == null || requirements.length == 0) {
+            this.logger.log(this.cfx.red(`Error: nothing to install.`));
+            return -1;
+        }
 
         requirements.forEach(name => {
             if (installations.existsByName(name)) {
@@ -32,7 +37,10 @@ export class InstallationService implements InstallationServiceInterface {
             installs.forEach(install => {
                 this.logger.log(this.cfx.white(`Installing ${this.cfx.white.bold(install.getName())}`));
             });
+            return 0;
         }
+
+        return -1;
     }
 }
 

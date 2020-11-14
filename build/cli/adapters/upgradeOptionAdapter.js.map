@@ -1,1 +1,1 @@
-{"version":3,"file":"upgradeOptionAdapter.js","sourceRoot":"","sources":["../../../src/cli/adapters/upgradeOptionAdapter.ts"],"names":[],"mappings":";;;AAEA,MAAa,oBAAoB;IAAjC;QACW,YAAO,GAAG,GAAG,EAAE,CAAC,SAAS,CAAC;IACrC,CAAC;CAAA;AAFD,oDAEC"}
+{"version":3,"file":"upgradeOptionAdapter.js","sourceRoot":"","sources":["../../../src/cli/adapters/upgradeOptionAdapter.ts"],"names":[],"mappings":";;;AAEA,MAAa,oBAAoB;IAAjC;QACW,YAAO,GAAG,GAAG,EAAE,CAAC,WAAW,CAAC;IACvC,CAAC;CAAA;AAFD,oDAEC"}

@@ -2,31 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCliApplication = exports.CliApplication = void 0;
 const program = require("commander");
-const registry_1 = require("../domain/registries/registry");
+const registries_1 = require("../domain/registries");
 const adapters_1 = require("./adapters");
-const _ = require("lodash");
 class CliApplication {
     constructor(configuration, installService) {
         this.configuration = configuration;
-        this.installations = new registry_1.Registry();
-        this.options = new registry_1.Registry();
+        this.installations = new registries_1.Registry();
+        this.options = new registries_1.Registry();
         this.installService = installService;
     }
     execute() {
         program
+            .command('install [installation...]', { isDefault: true })
             .description('Install nRF5 toolchain with extra flavors')
-            .option('--nrf52', 'Nordic nRF52 SDK')
-            .option('--gxepd2', 'Arduino GxEPD2 library')
             .option('--upgrade', 'Upgrade provided installations')
             .option('--reinstall', 'Reinstall provided installations')
-            .action(() => {
-            var requirements = _.reduce(this.configuration.getOptions(), (res, val) => {
-                var name = val.slice(2);
-                res.push(name);
-                return res;
-            }, []);
+            .action((_, opts) => {
+            var _a;
             this.setupRegistries();
-            this.installService.install(requirements, this.installations, this.options);
+            this.installService.install((_a = opts.parent) === null || _a === void 0 ? void 0 : _a.args, this.installations, this.options);
         });
         program.parse(this.configuration.getArguments());
     }

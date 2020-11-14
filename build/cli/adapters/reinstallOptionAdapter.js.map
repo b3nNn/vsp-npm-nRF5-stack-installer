@@ -1,1 +1,1 @@
-{"version":3,"file":"reinstallOptionAdapter.js","sourceRoot":"","sources":["../../../src/cli/adapters/reinstallOptionAdapter.ts"],"names":[],"mappings":";;;AAEA,MAAa,sBAAsB;IAAnC;QACW,YAAO,GAAG,GAAG,EAAE,CAAC,WAAW,CAAC;IACvC,CAAC;CAAA;AAFD,wDAEC"}
+{"version":3,"file":"reinstallOptionAdapter.js","sourceRoot":"","sources":["../../../src/cli/adapters/reinstallOptionAdapter.ts"],"names":[],"mappings":";;;AAEA,MAAa,sBAAsB;IAAnC;QACW,YAAO,GAAG,GAAG,EAAE,CAAC,aAAa,CAAC;IACzC,CAAC;CAAA;AAFD,wDAEC"}

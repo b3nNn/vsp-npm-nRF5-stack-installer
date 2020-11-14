@@ -9,6 +9,10 @@ class InstallationService {
     install(requirements, installations, options) {
         const installs = [];
         const opts = [];
+        if (requirements == null || requirements.length == 0) {
+            this.logger.log(this.cfx.red(`Error: nothing to install.`));
+            return -1;
+        }
         requirements.forEach(name => {
             if (installations.existsByName(name)) {
                 installs.push(installations.get(name));
@@ -26,7 +30,9 @@ class InstallationService {
             installs.forEach(install => {
                 this.logger.log(this.cfx.white(`Installing ${this.cfx.white.bold(install.getName())}`));
             });
+            return 0;
         }
+        return -1;
     }
 }
 exports.InstallationService = InstallationService;
