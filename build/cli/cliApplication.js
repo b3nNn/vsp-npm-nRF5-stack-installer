@@ -20,12 +20,12 @@ class CliApplication {
             .action((_, opts) => {
             var _a;
             this.setupRegistries();
-            this.installService.install((_a = opts.parent) === null || _a === void 0 ? void 0 : _a.args, this.installations, this.options);
+            this.installService.installRequirements((_a = opts.parent) === null || _a === void 0 ? void 0 : _a.args, this.installations, this.options);
         });
         program.parse(this.configuration.getArguments());
     }
     setupRegistries() {
-        this.installations.register(new adapters_1.nRF52InstallationAdapter());
+        this.installations.register(new adapters_1.nRF52InstallationAdapter(this.installService));
         this.options.register(new adapters_1.ReinstallOptionAdapter());
         this.options.register(new adapters_1.UpgradeOptionAdapter());
     }

@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createAppConfiguration = exports.AppConfiguration = void 0;
+const path = require("path");
 class AppConfiguration {
     constructor(argv) {
+        this.getRootDirectory = () => 'vendor';
+        this.getTemporaryDirectory = () => path.join(this.getRootDirectory(), '.tmp');
         this.argv = argv;
     }
     getArguments() {

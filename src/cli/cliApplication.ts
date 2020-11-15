@@ -26,14 +26,14 @@ export class CliApplication {
         .option('--reinstall', 'Reinstall provided installations')
         .action((_, opts) => {
             this.setupRegistries();
-            this.installService.install(opts.parent?.args, this.installations, this.options);
+            this.installService.installRequirements(opts.parent?.args, this.installations, this.options);
         });
 
         program.parse(this.configuration.getArguments());
     }
 
     private setupRegistries() {
-        this.installations.register(new nRF52InstallationAdapter());
+        this.installations.register(new nRF52InstallationAdapter(this.installService));
         this.options.register(new ReinstallOptionAdapter());
         this.options.register(new UpgradeOptionAdapter());
     }

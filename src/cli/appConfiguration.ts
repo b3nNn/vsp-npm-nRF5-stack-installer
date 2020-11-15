@@ -1,6 +1,7 @@
-import { AppConfigurationInterface } from '../domain/configurations';
+import * as path from 'path';
+import { AppConfigurationInterface, InstallationConfigurationInterface } from '../domain/configurations';
 
-export class AppConfiguration implements AppConfigurationInterface {
+export class AppConfiguration implements AppConfigurationInterface, InstallationConfigurationInterface {
     private argv: string[];
 
     public constructor(argv: string[]) {
@@ -10,6 +11,10 @@ export class AppConfiguration implements AppConfigurationInterface {
     public getArguments(): string[] {
         return this.argv;
     }
+
+    public getRootDirectory = () => 'vendor';
+
+    public getTemporaryDirectory = () => path.join(this.getRootDirectory(), '.tmp');
 }
 
 export function createAppConfiguration(argv: string[]): AppConfiguration {

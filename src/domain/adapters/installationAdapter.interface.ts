@@ -1,8 +1,9 @@
 import { OptionAdapterInterface } from '.';
+import { InstallationConfigurationInterface } from '../configurations';
 
 export interface InstallationAdapterInterface {
     getName(): string;
     getDependencies(): string[];
-    acceptOption(option: OptionAdapterInterface): boolean;
     apply(option: OptionAdapterInterface): void;
+    execute(configuration: InstallationConfigurationInterface): Promise<number>;
 }

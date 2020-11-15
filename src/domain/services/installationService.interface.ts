@@ -2,5 +2,5 @@ import { InstallationAdapterInterface, OptionAdapterInterface } from '../adapter
 import { Registry } from '../registries/registry';
 
 export interface InstallationServiceInterface {
-    install(requirements: string[], installations: Registry<InstallationAdapterInterface>, options: Registry<OptionAdapterInterface>);
+    installRequirements(requirements: string[], installations: Registry<InstallationAdapterInterface>, options: Registry<OptionAdapterInterface>);
 }

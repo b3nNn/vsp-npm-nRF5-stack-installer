@@ -26,9 +26,12 @@
   },
   "homepage": "https://github.com/b3nNn/vsp-npm-nRF5-stack-installer#readme",
   "dependencies": {
+    "@types/shelljs": "^0.8.8",
+    "anzip": "^0.2.0",
     "chalk": "^4.1.0",
     "commander": "^6.2.0",
     "lodash": "^4.17.20",
+    "node-downloader-helper": "^1.0.15",
     "shelljs": "^0.8.4",
     "tslib": "~2.0.3"
   },
@@ -36,6 +39,7 @@
     "@types/jest": "~26.0.15",
     "@types/lodash": "^4.14.165",
     "@types/node": "~14.14",
+    "@types/node-downloader-helper": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "~4.7.0",
     "@typescript-eslint/parser": "~4.7.0",
     "eslint": "~7.13.0",
