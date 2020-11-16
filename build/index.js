@@ -9,6 +9,6 @@ const ctx = cli.createContext(console, chalk);
 const fileRepository = filesystem.repositories.createFileRepository();
 const installService = domain.services.createInstallationService(ctx, config, fileRepository);
 const installAdapterService = domain.services.createInstallationAdapterService(ctx, config, fileRepository);
-const app = cli.createCliApplication(config, installService, installAdapterService);
+const app = cli.createCliApplication(config, installService, installAdapterService, fileRepository);
 app.execute();
 //# sourceMappingURL=index.js.map

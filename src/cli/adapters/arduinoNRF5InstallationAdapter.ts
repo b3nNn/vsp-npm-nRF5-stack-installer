@@ -1,14 +1,17 @@
+import * as _ from 'lodash';
 import { InstallationAdapterInterface, OptionAdapterInterface } from '../../domain/adapters';
-import { InstallationConfigurationInterface } from '../../domain/configurations';
 import { InstallationAdapterServiceInterface } from '../../domain/services';
+import { FileRepositoryInterface } from '../../domain/repositories';
 
 export class ArduinoNRF5InstallationAdapter implements InstallationAdapterInterface {
     private readonly service: InstallationAdapterServiceInterface;
+    private readonly files: FileRepositoryInterface;
 
     public readonly repositoryDlPath: string = 'https://github.com/sandeepmistry/arduino-nRF5/archive/master.zip';
 
-    public constructor(installationService: InstallationAdapterServiceInterface) {
+    public constructor(installationService: InstallationAdapterServiceInterface, fileRepository: FileRepositoryInterface) {
         this.service = installationService;
+        this.files = fileRepository;
     }
 
     public getName = () => "arduino-nrf5";
@@ -17,7 +20,7 @@ export class ArduinoNRF5InstallationAdapter implements InstallationAdapterInterf
 
     public apply = (_: OptionAdapterInterface): void => {};
 
-    public async execute(_: InstallationConfigurationInterface): Promise<number> {
+    public async execute(): Promise<number> {
         const tmpDir = this.service.prepareTemporaryFolder(this);
 
         if (tmpDir == null) {
@@ -27,7 +30,13 @@ export class ArduinoNRF5InstallationAdapter implements InstallationAdapterInterf
         try {
             var downloadInfo = await this.service.download(this, this.repositoryDlPath);
             var archives = await this.service.unzipDownload(this, downloadInfo);
-            await this.service.copyToInstallationFolder(this, archives);
+            var replaces = _.map(archives, (val: string): string => {
+                return val.slice(0, val.indexOf('-master'));
+            });
+            archives.forEach((archive: string, idx: number) => {
+                this.files.rename(archive, replaces[idx]);
+            });
+            await this.service.copyToInstallationFolder(this, replaces);
             this.service.terminate(this, null);
         } catch(e) {
             this.service.terminate(this, e.message || e);

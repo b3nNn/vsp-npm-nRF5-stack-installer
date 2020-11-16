@@ -5,4 +5,5 @@ export interface FileRepositoryInterface {
     delete(path: string): number;
     isDirectory(path: string): boolean;
     exists(path: string): boolean;
+    rename(source: string, destination: string): number;
 }

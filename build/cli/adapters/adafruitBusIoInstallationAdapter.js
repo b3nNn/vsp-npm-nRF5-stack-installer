@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GxEPD2InstallationAdapter = void 0;
+exports.AdafruitBusIoInstallationAdapter = void 0;
 const tslib_1 = require("tslib");
 const _ = require("lodash");
-class GxEPD2InstallationAdapter {
+class AdafruitBusIoInstallationAdapter {
     constructor(installationService, fileRepository) {
-        this.repositoryDlPath = 'https://github.com/ZinggJM/GxEPD2/archive/master.zip';
-        this.getName = () => "gxepd2";
+        this.repositoryDlPath = 'https://github.com/adafruit/Adafruit_BusIO/archive/master.zip';
+        this.getName = () => "adafruit-busio";
         this.getDependencies = () => [];
         this.apply = (_) => { };
         this.service = installationService;
@@ -38,5 +38,5 @@ class GxEPD2InstallationAdapter {
         });
     }
 }
-exports.GxEPD2InstallationAdapter = GxEPD2InstallationAdapter;
-//# sourceMappingURL=gxEPD2InstallationAdapter.js.map
+exports.AdafruitBusIoInstallationAdapter = AdafruitBusIoInstallationAdapter;
+//# sourceMappingURL=adafruitBusIoInstallationAdapter.js.map

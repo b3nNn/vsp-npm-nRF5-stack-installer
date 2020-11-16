@@ -99,7 +99,7 @@ class InstallationService {
             _.forEach(options, (opt) => {
                 installation.apply(opt);
             });
-            return yield installation.execute(this.config);
+            return yield installation.execute();
         });
     }
     getInstallations(requirements, installations) {

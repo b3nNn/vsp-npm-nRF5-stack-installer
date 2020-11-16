@@ -43,6 +43,22 @@ export class FileRepository implements FileRepositoryInterface {
     public exists(path: string): boolean {
         return sh.test('-e', path);
     }
+
+    public rename(source: string, destination: string): number {
+        var output = sh.mv(source, destination);
+
+        if (output.stderr != null) {
+            return -1;
+        } else {
+            output = sh.rm('-rf', source);
+        }
+
+        if (output.stderr != null) {
+            return -1;
+        }
+        
+        return 0;
+    }
 }
 
 export function createFileRepository(): FileRepository {

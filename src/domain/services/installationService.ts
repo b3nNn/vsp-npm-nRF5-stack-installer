@@ -117,7 +117,7 @@ export class InstallationService implements InstallationServiceInterface {
             installation.apply(opt);
         });
 
-        return await installation.execute(this.config);
+        return await installation.execute();
     }
 
     private getInstallations(requirements: string[], installations: Registry<InstallationAdapterInterface>): InstallationAdapterInterface[] {

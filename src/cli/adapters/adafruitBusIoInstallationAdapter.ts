@@ -3,18 +3,18 @@ import { InstallationAdapterInterface, OptionAdapterInterface } from '../../doma
 import { InstallationAdapterServiceInterface } from '../../domain/services';
 import { FileRepositoryInterface } from '../../domain/repositories';
 
-export class GxEPD2InstallationAdapter implements InstallationAdapterInterface {
+export class AdafruitBusIoInstallationAdapter implements InstallationAdapterInterface {
     private readonly service: InstallationAdapterServiceInterface;
     private readonly files: FileRepositoryInterface;
 
-    public readonly repositoryDlPath: string = 'https://github.com/ZinggJM/GxEPD2/archive/master.zip';
+    public readonly repositoryDlPath: string = 'https://github.com/adafruit/Adafruit_BusIO/archive/master.zip';
 
     public constructor(installationService: InstallationAdapterServiceInterface, fileRepository: FileRepositoryInterface) {
         this.service = installationService;
         this.files = fileRepository;
     }
 
-    public getName = () => "gxepd2";
+    public getName = () => "adafruit-busio";
     
     public getDependencies = () => [];
 

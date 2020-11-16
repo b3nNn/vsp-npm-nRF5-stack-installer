@@ -33,6 +33,19 @@ class FileRepository {
     exists(path) {
         return sh.test('-e', path);
     }
+    rename(source, destination) {
+        var output = sh.mv(source, destination);
+        if (output.stderr != null) {
+            return -1;
+        }
+        else {
+            output = sh.rm('-rf', source);
+        }
+        if (output.stderr != null) {
+            return -1;
+        }
+        return 0;
+    }
 }
 exports.FileRepository = FileRepository;
 function createFileRepository() {
