@@ -1,5 +1,5 @@
 {
-  "name": "npm-nrf5-installer",
+  "name": "nrf5-install",
   "version": "0.0.1",
   "description": "An awesome nRF5 stack installer using npm",
   "bin": {
