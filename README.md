@@ -32,3 +32,6 @@ Commands:
 - ```adafruit-gfx```: [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library)
 - ```adafruit-busio```: [Adafruit Bus IO library](https://github.com/adafruit/Adafruit_BusIO)
 - ```arduino-nrf5```: [Arduino Core for Nordic Semiconductor nRF5 based boards](https://github.com/sandeepmistry/arduino-nRF5)
+
+## Known issues
+- Archive extraction does not works as expected on Windows; paths are wrongs when extracting any archive.
