@@ -1,25 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nRF52InstallationAdapter = void 0;
+exports.NRF52InstallationAdapter = void 0;
 const tslib_1 = require("tslib");
-class nRF52InstallationAdapter {
-    constructor(installationService) {
+const _ = require("lodash");
+class NRF52InstallationAdapter {
+    constructor(installationService, fileRepository) {
         this.nordicSDKPath = 'https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK1702d674dde.zip';
         this.getName = () => "nrf52";
         this.getDependencies = () => [];
         this.apply = (_) => { };
         this.service = installationService;
+        this.files = fileRepository;
     }
-    execute(_) {
+    execute() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const tmpDir = this.service.prepareTemporaryFolder(this);
             if (tmpDir == null) {
                 return -1;
             }
             try {
-                var downloadInfo = yield this.service.download(this, 'nRF52 SDK v17.0.2', this.nordicSDKPath);
-                var archives = yield this.service.unzipDownload(this, 'nRF52 SDK v17.0.2', downloadInfo);
-                yield this.service.copyToInstallationFolder('nRF52 SDK v17.0.2', archives);
+                var downloadInfo = yield this.service.download(this, this.nordicSDKPath);
+                var archives = yield this.service.unzipDownload(this, downloadInfo);
+                var replaces = _.map(archives, (val) => {
+                    return val.slice(0, val.indexOf('-master'));
+                });
+                archives.forEach((archive, idx) => {
+                    this.files.rename(archive, replaces[idx]);
+                });
+                yield this.service.copyToInstallationFolder(this, replaces);
                 this.service.terminate(this, null);
             }
             catch (e) {
@@ -30,5 +38,5 @@ class nRF52InstallationAdapter {
         });
     }
 }
-exports.nRF52InstallationAdapter = nRF52InstallationAdapter;
-//# sourceMappingURL=nrf52InstallationAdapter.js.map
+exports.NRF52InstallationAdapter = NRF52InstallationAdapter;
+//# sourceMappingURL=nRF52InstallationAdapter.js.map
