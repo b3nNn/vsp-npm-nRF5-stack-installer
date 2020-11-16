@@ -4,8 +4,6 @@ exports.createInstallationService = exports.InstallationService = void 0;
 const tslib_1 = require("tslib");
 const _ = require("lodash");
 const path = require("path");
-const dlhelper = require("node-downloader-helper");
-const anzip = require("anzip");
 class InstallationService {
     constructor(logging, configuration, fileRepository) {
         this.logger = logging.getConsole();
@@ -25,32 +23,11 @@ class InstallationService {
             if ((yield this.installAll(this.getInstallations(requirements, installations), this.getOptions(requirements, options))) != 0) {
                 return -1;
             }
+            if (this.cleanup() != 0) {
+                return -1;
+            }
             return 0;
         });
-    }
-    prepareTemporaryFolder(installation) {
-        const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory(), installation.getName());
-        var displayStatement = (isOk, err = null) => {
-            this.logger.log(this.cfx.white(`preparing ${this.cfx.white.bold(installation.getName())} temporary folder\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
-            if (err) {
-                this.logger.log(this.cfx.red(`error: ${err}`));
-            }
-        };
-        if (!this.files.exists(tmpDir) && this.files.createDirectory(tmpDir) != 0) {
-            displayStatement(false, `installation temporary directory ${tmpDir} is not writable`);
-            return null;
-        }
-        displayStatement(true);
-        return tmpDir;
-    }
-    terminate(installation, error = null) {
-        if (error == null) {
-            this.logger.log(this.cfx.green(`${this.cfx.green.bold(installation.getName())} installation succeded`));
-        }
-        else {
-            this.logger.log(this.cfx.red(`${this.cfx.red.bold(installation.getName())} installation failed`));
-            this.logger.log(this.cfx.red(`error: ${error}`));
-        }
     }
     prepare() {
         const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory());
@@ -66,81 +43,22 @@ class InstallationService {
         }
         return 0;
     }
-    download(installation, name, url) {
-        return new Promise((resolve, reject) => {
-            const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory(), installation.getName());
-            const dl = new dlhelper.DownloaderHelper(url, tmpDir);
-            var displayStatement = (isOk, err = null) => {
-                this.logger.log(this.cfx.white(`downloading ${name}\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
-                if (err) {
-                    this.logger.log(this.cfx.red(`error: ${err}`));
-                }
-            };
-            dl.on('download', () => {
-                this.logger.log(this.cfx.white(`downloading ${name}...`));
-            });
-            dl.on('end', (downloadInfo) => {
-                displayStatement(true);
-                resolve(downloadInfo);
-            });
-            dl.on('error', error => {
-                displayStatement(false, `not able to download content from '${url}'`);
-                reject(error);
-            });
-            dl.start();
-        });
-    }
-    unzipDownload(installation, name, downloadInfo) {
-        return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory(), installation.getName());
-            var displayStatement = (isOk, err = null) => {
-                this.logger.log(this.cfx.white(`uncompressing ${name}\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
-                if (err) {
-                    this.logger.log(this.cfx.red(`error: ${err}`));
-                }
-            };
-            this.logger.log(this.cfx.white(`uncompressing ${name}...`));
-            try {
-                const output = yield anzip(`${downloadInfo.filePath}`, {
-                    outputPath: tmpDir
-                });
-                var results = _.reduce(output.files, (res, val) => {
-                    var rootDir = path.join(tmpDir, val.directory.split(path.sep).shift());
-                    if (!_.includes(res, rootDir)) {
-                        res.push(rootDir);
-                    }
-                    return res;
-                }, []);
-                displayStatement(true);
-                resolve(results);
+    cleanup() {
+        const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory());
+        var displayStatement = (isOk, err = null) => {
+            this.logger.log(this.cfx.white(`cleaning installations\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
+            if (err) {
+                this.logger.log(this.cfx.red(`error: ${err}`));
             }
-            catch (e) {
-                displayStatement(false, `not able to unzip the archive '${downloadInfo.filePath}'`);
-                reject(e);
-            }
-        }));
-    }
-    copyToInstallationFolder(name, paths) {
-        return new Promise((resolve, reject) => {
-            const rootDir = path.join(this.files.getCwd(), this.config.getRootDirectory());
-            var displayStatement = (isOk, err = null) => {
-                this.logger.log(this.cfx.white(`copying ${name}\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
-                if (err) {
-                    this.logger.log(this.cfx.red(`error: ${err}`));
-                }
-            };
-            this.logger.log(this.cfx.white(`copying ${name}...`));
-            for (var it = 0; it < paths.length; it++) {
-                var current = paths[it];
-                if (this.files.copy(current, rootDir) != 0) {
-                    displayStatement(false, `not able to copy the source '${current}' into '${rootDir}'`);
-                    reject(null);
-                    return;
-                }
-            }
+        };
+        if (this.files.exists(tmpDir) && this.files.delete(tmpDir) != 0) {
+            displayStatement(false, `temporary directory ${tmpDir} is not deleteable`);
+            return -1;
+        }
+        else if (this.files.exists(tmpDir)) {
             displayStatement(true);
-            resolve(paths);
-        });
+        }
+        return 0;
     }
     validateRequirements(requirements, installations, options) {
         var exists = [...installations.getAllRegistredNames(), ...options.getAllRegistredNames()];

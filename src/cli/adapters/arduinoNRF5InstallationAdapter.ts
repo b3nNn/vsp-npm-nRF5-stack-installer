@@ -2,17 +2,19 @@ import { InstallationAdapterInterface, OptionAdapterInterface } from '../../doma
 import { InstallationConfigurationInterface } from '../../domain/configurations';
 import { InstallationAdapterServiceInterface } from '../../domain/services';
 
-export class nRF52InstallationAdapter implements InstallationAdapterInterface {
-    private service: InstallationAdapterServiceInterface;
+export class ArduinoNRF5InstallationAdapter implements InstallationAdapterInterface {
+    private readonly service: InstallationAdapterServiceInterface;
 
-    public readonly nordicSDKPath: string = 'https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK1702d674dde.zip';
+    public readonly repositoryDlPath: string = 'https://github.com/sandeepmistry/arduino-nRF5/archive/master.zip';
 
     public constructor(installationService: InstallationAdapterServiceInterface) {
         this.service = installationService;
     }
 
-    public getName = () => "nrf52";
+    public getName = () => "arduino-nrf5";
+    
     public getDependencies = () => [];
+
     public apply = (_: OptionAdapterInterface): void => {};
 
     public async execute(_: InstallationConfigurationInterface): Promise<number> {
@@ -23,9 +25,9 @@ export class nRF52InstallationAdapter implements InstallationAdapterInterface {
         }
 
         try {
-            var downloadInfo = await this.service.download(this, 'nRF52 SDK v17.0.2', this.nordicSDKPath);
-            var archives = await this.service.unzipDownload(this, 'nRF52 SDK v17.0.2', downloadInfo);
-            await this.service.copyToInstallationFolder('nRF52 SDK v17.0.2', archives);
+            var downloadInfo = await this.service.download(this, this.repositoryDlPath);
+            var archives = await this.service.unzipDownload(this, downloadInfo);
+            await this.service.copyToInstallationFolder(this, archives);
             this.service.terminate(this, null);
         } catch(e) {
             this.service.terminate(this, e.message || e);

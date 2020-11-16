@@ -8,6 +8,7 @@ const config = cli.createAppConfiguration(process.argv);
 const ctx = cli.createContext(console, chalk);
 const fileRepository = filesystem.repositories.createFileRepository();
 const installService = domain.services.createInstallationService(ctx, config, fileRepository);
-const app = cli.createCliApplication(config, installService);
+const installAdapterService = domain.services.createInstallationAdapterService(ctx, config, fileRepository);
+const app = cli.createCliApplication(config, installService, installAdapterService);
 app.execute();
 //# sourceMappingURL=index.js.map

@@ -26,6 +26,16 @@ export class FileRepository implements FileRepositoryInterface {
         return 0;
     }
 
+    public delete(path: string): number {
+        var output = sh.rm('-rf', path);
+
+        if (output.stderr != null) {
+            return -1;
+        }
+
+        return 0;
+    }
+
     public isDirectory(path: string): boolean {
         return sh.test('-d', path);
     }

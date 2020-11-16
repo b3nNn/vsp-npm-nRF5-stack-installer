@@ -1,21 +1,23 @@
 import * as program from 'commander';
 import { AppConfigurationInterface } from '.';
-import { InstallationService } from '../domain/services';
+import { InstallationService, InstallationAdapterService } from '../domain/services';
 import { InstallationAdapterInterface, OptionAdapterInterface } from '../domain/adapters';
 import { Registry } from '../domain/registries';
-import { nRF52InstallationAdapter, UpgradeOptionAdapter, ReinstallOptionAdapter } from './adapters';
+import { AdafruitGfxInstallationAdapter, ArduinoNRF5InstallationAdapter, GxEPD2InstallationAdapter, NRF52InstallationAdapter, UpgradeOptionAdapter, ReinstallOptionAdapter } from './adapters';
 
 export class CliApplication {
-    private configuration: AppConfigurationInterface;
-    private installations: Registry<InstallationAdapterInterface>;
-    private options: Registry<OptionAdapterInterface>;
-    private installService: InstallationService;
+    private readonly configuration: AppConfigurationInterface;
+    private readonly installations: Registry<InstallationAdapterInterface>;
+    private readonly options: Registry<OptionAdapterInterface>;
+    private readonly installService: InstallationService;
+    private readonly installAdapterService: InstallationAdapterService;
 
-    constructor(configuration: AppConfigurationInterface, installService: InstallationService) {
+    constructor(configuration: AppConfigurationInterface, installService: InstallationService, installAdapterService: InstallationAdapterService) {
         this.configuration = configuration;
         this.installations = new Registry<InstallationAdapterInterface>();
         this.options = new Registry<OptionAdapterInterface>();
         this.installService = installService;
+        this.installAdapterService = installAdapterService;
     }
 
     public execute() {
@@ -33,12 +35,15 @@ export class CliApplication {
     }
 
     private setupRegistries() {
-        this.installations.register(new nRF52InstallationAdapter(this.installService));
+        this.installations.register(new AdafruitGfxInstallationAdapter(this.installAdapterService));
+        this.installations.register(new ArduinoNRF5InstallationAdapter(this.installAdapterService));
+        this.installations.register(new GxEPD2InstallationAdapter(this.installAdapterService));
+        this.installations.register(new NRF52InstallationAdapter(this.installAdapterService));
         this.options.register(new ReinstallOptionAdapter());
         this.options.register(new UpgradeOptionAdapter());
     }
 }
 
-export function createCliApplication(configuration: AppConfigurationInterface, installService: InstallationService): CliApplication {
-    return new CliApplication(configuration, installService);
+export function createCliApplication(configuration: AppConfigurationInterface, installService: InstallationService, installAdapterService: InstallationAdapterService): CliApplication {
+    return new CliApplication(configuration, installService, installAdapterService);
 }

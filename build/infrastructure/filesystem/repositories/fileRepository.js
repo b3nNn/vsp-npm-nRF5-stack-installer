@@ -20,6 +20,13 @@ class FileRepository {
         }
         return 0;
     }
+    delete(path) {
+        var output = sh.rm('-rf', path);
+        if (output.stderr != null) {
+            return -1;
+        }
+        return 0;
+    }
     isDirectory(path) {
         return sh.test('-d', path);
     }

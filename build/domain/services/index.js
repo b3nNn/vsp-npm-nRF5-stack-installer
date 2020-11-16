@@ -4,4 +4,5 @@ const tslib_1 = require("tslib");
 tslib_1.__exportStar(require("./installationService"), exports);
 tslib_1.__exportStar(require("./installationService.interface"), exports);
 tslib_1.__exportStar(require("./installationAdapterService.interface"), exports);
+tslib_1.__exportStar(require("./installationAdapterService"), exports);
 //# sourceMappingURL=index.js.map
