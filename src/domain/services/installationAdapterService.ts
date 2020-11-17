@@ -139,6 +139,32 @@ export class InstallationAdapterService implements InstallationAdapterServiceInt
         });
     }
 
+    public copyTemporaryFolderAsInstallationFolder(installation: InstallationAdapterInterface, output: string = null): Promise<string> {
+        const name = installation.getName();
+
+        return new Promise<string>((resolve, reject) => {
+            const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory(), name);
+            const destDir = path.join(this.files.getCwd(), this.config.getRootDirectory(), output || name);
+            var displayStatement = (isOk: boolean, err: string = null): void => {
+                this.logger.log(this.cfx.white(`copying ${this.cfx.white.bold(name)}\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
+                if (err) {
+                    this.logger.log(this.cfx.red(`error: ${err}`));
+                }
+            };
+
+            this.logger.log(this.cfx.white(`copying ${this.cfx.white.bold(name)}...`));
+
+            if (this.files.copy(tmpDir, destDir) != 0) {
+                displayStatement(false, `not able to copy the source '${tmpDir}' into '${destDir}'`);
+                reject(null);
+                return;
+            }
+
+            displayStatement(true);
+            resolve(destDir);
+        });
+    }
+
 }
 
 export function createInstallationAdapterService(logging: LoggingContextInterface, configuration: InstallationConfigurationInterface, fileRepository: FileRepositoryInterface) {

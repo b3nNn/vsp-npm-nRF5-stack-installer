@@ -3,7 +3,7 @@ import { AppConfigurationInterface } from '.';
 import { InstallationService, InstallationAdapterService } from '../domain/services';
 import { InstallationAdapterInterface, OptionAdapterInterface } from '../domain/adapters';
 import { Registry } from '../domain/registries';
-import { AdafruitGfxInstallationAdapter, AdafruitBusIoInstallationAdapter, ArduinoNRF5InstallationAdapter, GxEPD2InstallationAdapter, NRF52InstallationAdapter, UpgradeOptionAdapter, ReinstallOptionAdapter } from './adapters';
+import { AdafruitGfxInstallationAdapter, AdafruitBusIoInstallationAdapter, ArduinoNRF5InstallationAdapter, GccArmInstallationAdapter, GxEPD2InstallationAdapter, NRF52InstallationAdapter, UpgradeOptionAdapter, ReinstallOptionAdapter } from './adapters';
 import { FileRepositoryInterface } from '../domain/repositories';
 
 export class CliApplication {
@@ -41,6 +41,7 @@ export class CliApplication {
         this.installations.register(new AdafruitGfxInstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new AdafruitBusIoInstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new ArduinoNRF5InstallationAdapter(this.installAdapterService, this.files));
+        this.installations.register(new GccArmInstallationAdapter(this.installAdapterService));
         this.installations.register(new GxEPD2InstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new NRF52InstallationAdapter(this.installAdapterService));
         this.options.register(new ReinstallOptionAdapter());

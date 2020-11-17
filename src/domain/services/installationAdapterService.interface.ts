@@ -7,4 +7,5 @@ export interface InstallationAdapterServiceInterface {
     download(installation: InstallationAdapterInterface, url: string): Promise<dlhelper.DownloadInfo>;
     unzipDownload(installation: InstallationAdapterInterface, downloadInfo: dlhelper.DownloadInfo): Promise<string[]>;
     copyToInstallationFolder(installation: InstallationAdapterInterface, paths: string[]): Promise<string[]>;
+    copyTemporaryFolderAsInstallationFolder(installation: InstallationAdapterInterface, output: string): Promise<string>;
 }
