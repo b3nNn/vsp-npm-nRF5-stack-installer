@@ -22,10 +22,12 @@ class GxEPD2InstallationAdapter {
                 var downloadInfo = yield this.service.download(this, this.repositoryDlPath);
                 var archives = yield this.service.unzipDownload(this, downloadInfo);
                 var replaces = _.map(archives, (val) => {
-                    return val.slice(0, val.indexOf('-master'));
+                    var idx = val.indexOf('-master');
+                    var len = '-master'.length;
+                    return val.substr(0, idx) + val.substr(idx + len);
                 });
                 archives.forEach((archive, idx) => {
-                    this.files.rename(archive, replaces[idx]);
+                    this.files.copy(archive, replaces[idx]);
                 });
                 yield this.service.copyToInstallationFolder(this, replaces);
                 this.service.terminate(this, null);

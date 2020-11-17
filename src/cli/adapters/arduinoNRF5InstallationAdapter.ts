@@ -31,10 +31,12 @@ export class ArduinoNRF5InstallationAdapter implements InstallationAdapterInterf
             var downloadInfo = await this.service.download(this, this.repositoryDlPath);
             var archives = await this.service.unzipDownload(this, downloadInfo);
             var replaces = _.map(archives, (val: string): string => {
-                return val.slice(0, val.indexOf('-master'));
+                var idx = val.indexOf('-master');
+                var len = '-master'.length;
+                return val.substr(0, idx) + val.substr(idx + len);
             });
             archives.forEach((archive: string, idx: number) => {
-                this.files.rename(archive, replaces[idx]);
+                this.files.copy(archive, replaces[idx]);
             });
             await this.service.copyToInstallationFolder(this, replaces);
             this.service.terminate(this, null);

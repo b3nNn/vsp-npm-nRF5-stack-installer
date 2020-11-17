@@ -95,7 +95,7 @@ export class InstallationAdapterService implements InstallationAdapterServiceInt
                     outputPath: tmpDir
                 });
                 var results: string[] = _.reduce(output.files, (res: string[], val: any): string[] => {
-                    var rootDir = path.join(tmpDir, val.directory.split(path.sep).shift());
+                    var rootDir = path.join(tmpDir, val.directory.split('/').shift());
                     if (!_.includes(res, rootDir)) {
                         res.push(rootDir);
                     }

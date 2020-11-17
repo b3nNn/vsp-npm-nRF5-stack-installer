@@ -2,15 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NRF52InstallationAdapter = void 0;
 const tslib_1 = require("tslib");
-const _ = require("lodash");
 class NRF52InstallationAdapter {
-    constructor(installationService, fileRepository) {
+    constructor(installationService) {
         this.nordicSDKPath = 'https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK1702d674dde.zip';
         this.getName = () => "nrf52";
         this.getDependencies = () => [];
         this.apply = (_) => { };
         this.service = installationService;
-        this.files = fileRepository;
     }
     execute() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -21,13 +19,7 @@ class NRF52InstallationAdapter {
             try {
                 var downloadInfo = yield this.service.download(this, this.nordicSDKPath);
                 var archives = yield this.service.unzipDownload(this, downloadInfo);
-                var replaces = _.map(archives, (val) => {
-                    return val.slice(0, val.indexOf('-master'));
-                });
-                archives.forEach((archive, idx) => {
-                    this.files.rename(archive, replaces[idx]);
-                });
-                yield this.service.copyToInstallationFolder(this, replaces);
+                yield this.service.copyToInstallationFolder(this, archives);
                 this.service.terminate(this, null);
             }
             catch (e) {

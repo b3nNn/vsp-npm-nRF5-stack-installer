@@ -31,7 +31,7 @@ class CliApplication {
         this.installations.register(new adapters_1.AdafruitBusIoInstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new adapters_1.ArduinoNRF5InstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new adapters_1.GxEPD2InstallationAdapter(this.installAdapterService, this.files));
-        this.installations.register(new adapters_1.NRF52InstallationAdapter(this.installAdapterService, this.files));
+        this.installations.register(new adapters_1.NRF52InstallationAdapter(this.installAdapterService));
         this.options.register(new adapters_1.ReinstallOptionAdapter());
         this.options.register(new adapters_1.UpgradeOptionAdapter());
     }

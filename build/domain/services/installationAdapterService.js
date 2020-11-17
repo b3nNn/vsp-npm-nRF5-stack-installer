@@ -78,7 +78,7 @@ class InstallationAdapterService {
                     outputPath: tmpDir
                 });
                 var results = _.reduce(output.files, (res, val) => {
-                    var rootDir = path.join(tmpDir, val.directory.split(path.sep).shift());
+                    var rootDir = path.join(tmpDir, val.directory.split('/').shift());
                     if (!_.includes(res, rootDir)) {
                         res.push(rootDir);
                     }

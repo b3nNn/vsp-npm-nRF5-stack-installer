@@ -42,7 +42,7 @@ export class CliApplication {
         this.installations.register(new AdafruitBusIoInstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new ArduinoNRF5InstallationAdapter(this.installAdapterService, this.files));
         this.installations.register(new GxEPD2InstallationAdapter(this.installAdapterService, this.files));
-        this.installations.register(new NRF52InstallationAdapter(this.installAdapterService, this.files));
+        this.installations.register(new NRF52InstallationAdapter(this.installAdapterService));
         this.options.register(new ReinstallOptionAdapter());
         this.options.register(new UpgradeOptionAdapter());
     }

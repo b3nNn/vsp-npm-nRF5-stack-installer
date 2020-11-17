@@ -34,4 +34,3 @@ Commands:
 - ```arduino-nrf5```: [Arduino Core for Nordic Semiconductor nRF5 based boards](https://github.com/sandeepmistry/arduino-nRF5)
 
 ## Known issues
-- Archive extraction does not works as expected on Windows; paths are wrongs when extracting any archive.

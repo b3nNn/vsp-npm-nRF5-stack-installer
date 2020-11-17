@@ -23,9 +23,6 @@ class InstallationService {
             if ((yield this.installAll(this.getInstallations(requirements, installations), this.getOptions(requirements, options))) != 0) {
                 return -1;
             }
-            if (this.cleanup() != 0) {
-                return -1;
-            }
             return 0;
         });
     }
@@ -40,23 +37,6 @@ class InstallationService {
         if (!this.files.exists(tmpDir) && this.files.createDirectory(tmpDir) != 0) {
             displayStatement(false, `temporary directory ${tmpDir} is not writable`);
             return -1;
-        }
-        return 0;
-    }
-    cleanup() {
-        const tmpDir = path.join(this.files.getCwd(), this.config.getTemporaryDirectory());
-        var displayStatement = (isOk, err = null) => {
-            this.logger.log(this.cfx.white(`cleaning installations\t${isOk ? this.cfx.green('ok') : this.cfx.red('ko')}`));
-            if (err) {
-                this.logger.log(this.cfx.red(`error: ${err}`));
-            }
-        };
-        if (this.files.exists(tmpDir) && this.files.delete(tmpDir) != 0) {
-            displayStatement(false, `temporary directory ${tmpDir} is not deleteable`);
-            return -1;
-        }
-        else if (this.files.exists(tmpDir)) {
-            displayStatement(true);
         }
         return 0;
     }

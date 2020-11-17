@@ -1,17 +1,14 @@
 import * as _ from 'lodash';
 import { InstallationAdapterInterface, OptionAdapterInterface } from '../../domain/adapters';
 import { InstallationAdapterServiceInterface } from '../../domain/services';
-import { FileRepositoryInterface } from '../../domain/repositories';
 
 export class NRF52InstallationAdapter implements InstallationAdapterInterface {
     private readonly service: InstallationAdapterServiceInterface;
-    private readonly files: FileRepositoryInterface;
 
     public readonly nordicSDKPath: string = 'https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK1702d674dde.zip';
 
-    public constructor(installationService: InstallationAdapterServiceInterface, fileRepository: FileRepositoryInterface) {
+    public constructor(installationService: InstallationAdapterServiceInterface) {
         this.service = installationService;
-        this.files = fileRepository;
     }
 
     public getName = () => "nrf52";
@@ -30,13 +27,7 @@ export class NRF52InstallationAdapter implements InstallationAdapterInterface {
         try {
             var downloadInfo = await this.service.download(this, this.nordicSDKPath);
             var archives = await this.service.unzipDownload(this, downloadInfo);
-            var replaces = _.map(archives, (val: string): string => {
-                return val.slice(0, val.indexOf('-master'));
-            });
-            archives.forEach((archive: string, idx: number) => {
-                this.files.rename(archive, replaces[idx]);
-            });
-            await this.service.copyToInstallationFolder(this, replaces);
+            await this.service.copyToInstallationFolder(this, archives);
             this.service.terminate(this, null);
         } catch(e) {
             this.service.terminate(this, e.message || e);
